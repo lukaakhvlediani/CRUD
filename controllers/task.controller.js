@@ -106,10 +106,6 @@ exports.userRegistration = async (req, res) => {
       }
     })
 
-
-
-
-
     if (user) {
       return res
         .status(400)
@@ -118,10 +114,13 @@ exports.userRegistration = async (req, res) => {
       const newUser = new User({
         userName,
         email,
-        password,
+        password
       });
+     
       await newUser.save();
+      console.log(newUser)  
       return res.status(200).send({ message: "ok", data: newUser });
+      
     
   } catch (error) {
     console.log(error.message, "catch error userRegistration");
