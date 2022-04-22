@@ -1,5 +1,9 @@
 const Task = require("../models/task.model");
 const User = require("../models/User");
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+require("dotenv").config();
+const signature = process.env.JWT_SECRET
 
 exports.test = function (req, res) {
   res.send("Greetings from the Test controller!");
@@ -130,3 +134,33 @@ exports.userRegistration = async (req, res) => {
     });
   }
 };
+
+exports.login_user = async (req, res) => {
+  try {
+    const { email, password } = req.body
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res.status(400).send('user does not exists')
+    }
+    const passwordcompare = await bcrypt.compare(password, user.password)
+    if (!passwordcompare)
+      return res.status(400).send({ status: 'error', error: error.message })
+    const data = {
+      id: user._id,
+      email: user.email
+    }
+    const userToken = jwt.sign({ data }, signature)
+    user.token = userToken
+    await user.save()
+    return res.status(200).send({
+      message: 'OK',
+      data: {
+        email: user.email,
+        token: user.token,
+        id: user._id
+      }
+    })
+  } catch (err) {
+    return res.status(500).send({ message: err.message })
+  }
+}
