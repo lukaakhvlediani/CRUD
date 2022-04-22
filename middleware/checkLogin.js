@@ -6,7 +6,7 @@ exports.checkLogin = async (req, res) => {
         data: tasks,
       });
     } catch (error) {
-      console.log(error.message, "catch error getTodos");
+      console.log(error.message, "catch error checklogin");
   
       return res.status(500).send({
         message: error.message,

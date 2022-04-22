@@ -116,10 +116,10 @@ exports.userRegistration = async (req, res) => {
         email,
         password
       });
-     
+      
       await newUser.save();
       console.log(newUser)  
-      return res.status(200).send({ message: "ok", data: newUser });
+      return res.status(200).send({ message: "ok", data: {email,userName}});
       
     
   } catch (error) {
