@@ -147,7 +147,8 @@ exports.userRegistration = async (req, res) => {
     const { email, password, userName } = req.body;
     const user = await User.findOne({ email });
     const bcrypt = require("bcryptjs");
-
+    console.log(req.body)
+console.log(email,password,userName, "123")
     const saltRounds = 10;
 
     bcrypt.genSalt(saltRounds, function (saltError, salt) {
